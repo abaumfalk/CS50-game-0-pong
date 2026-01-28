@@ -2,8 +2,8 @@
     GD50 2018
     Pong Remake
 
-    pong-1
-    "The Low-Res Update"
+    pong-2
+    "The Rectangle Update"
 
     -- Main Program --
 
@@ -81,6 +81,20 @@ function love.draw()
 
     -- draw welcome text toward the top of the screen
     love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    --
+    -- paddles are simply rectangles we draw on the screen at certain points,
+    -- as is the ball
+    --
+
+    -- render first paddle (left side)
+    love.graphics.rectangle('fill', 10, 30, 5, 20)
+
+    -- render second paddle (right side)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, 5, 20)
+
+    -- render ball (center)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     -- end rendering at virtual resolution
     push:apply('end')
