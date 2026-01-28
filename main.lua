@@ -35,7 +35,20 @@ function love.load()
 end
 
 --[[
-    Called after update by LÖVE2D, used to draw anything to the screen, updated or otherwise.
+    Keyboard handling, called by LÖVE2D each frame; 
+    passes in the key we pressed so we can access.
+]]
+function love.keypressed(key)
+    -- keys can be accessed by string name
+    if key == 'escape' then
+        -- function LÖVE gives us to terminate application
+        love.event.quit()
+    end
+end
+
+--[[
+    Called after update by LÖVE2D, used to draw anything to the screen, 
+    updated or otherwise.
 ]]
 function love.draw()
     love.graphics.printf(
