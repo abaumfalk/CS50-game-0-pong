@@ -27,6 +27,10 @@ WINDOW_HEIGHT = 720
     Runs when the game first starts up, only once; used to initialize the game.
 ]]
 function love.load()
+    -- use nearest-neighbor filtering on upscaling and downscaling to prevent blurring of text 
+    -- and graphics; try removing this function to see the difference!
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = false,
