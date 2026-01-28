@@ -75,9 +75,12 @@ function love.draw()
     -- begin rendering at virtual resolution
     push:apply('start')
 
-    -- condensed onto one line from last example
-    -- note we are now using virtual width and height now for text placement
-    love.graphics.printf('Hello Pong!', 0, VIRTUAL_HEIGHT / 2 - 6, VIRTUAL_WIDTH, 'center')
+    -- clear the screen with a specific color; in this case, a color similar
+    -- to some versions of the original Pong
+    love.graphics.clear(40/255, 45/255, 52/255, 255/255)
+
+    -- draw welcome text toward the top of the screen
+    love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
 
     -- end rendering at virtual resolution
     push:apply('end')
