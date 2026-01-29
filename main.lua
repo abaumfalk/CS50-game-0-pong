@@ -2,8 +2,8 @@
     GD50 2018
     Pong Remake
 
-    pong-4
-    "The Ball Update"
+    pong-5
+    "The Class Update"
 
     -- Main Program --
 
@@ -37,6 +37,10 @@ Class = require 'class'
 -- our Paddle class, which stores position and dimensions for each Paddle
 -- and the logic for rendering them
 require 'Paddle'
+
+-- our Ball class, which isn't much different than a Paddle structure-wise
+-- but which will mechanically function very differently
+require 'Ball'
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -85,13 +89,8 @@ function love.load()
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
 
-    -- velocity and position variables for our ball when play starts
-    ballX = VIRTUAL_WIDTH / 2 - 2
-    ballY = VIRTUAL_HEIGHT / 2 - 2
-
-    -- math.random returns a random value between the left and right number
-    ballDX = math.random(2) == 1 and 100 or -100
-    ballDY = math.random(-50, 50)
+    -- place a ball in the middle of the screen
+    ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     -- game state variable used to transition between different parts of the game
     -- (used for beginning, menus, main game, high score list, etc.)
@@ -125,8 +124,7 @@ function love.update(dt)
     -- update our ball based on its DX and DY only if we're in play state;
     -- scale the velocity by dt so movement is framerate-independent
     if gameState == 'play' then
-        ballX = ballX + ballDX * dt
-        ballY = ballY + ballDY * dt
+        ball:update(dt)
     end
 
     player1:update(dt)
@@ -149,16 +147,9 @@ function love.keypressed(key)
             gameState = 'play'
         else
             gameState = 'start'
-            
-            -- start ball's position in the middle of the screen
-            ballX = VIRTUAL_WIDTH / 2 - 2
-            ballY = VIRTUAL_HEIGHT / 2 - 2
 
-            -- given ball's x and y velocity a random starting value
-            -- the and/or pattern here is Lua's way of accomplishing a ternary operation
-            -- in other programming languages like C
-            ballDX = math.random(2) == 1 and 100 or -100
-            ballDY = math.random(-50, 50) * 1.5
+            -- ball's new reset method
+            ball:reset()
         end
     end
 end
@@ -196,8 +187,8 @@ function love.draw()
     player1:render()
     player2:render()
 
-    -- render ball (center)
-    love.graphics.rectangle('fill', ballX, ballY, 4, 4)
+    -- render ball using its class's render method
+    ball:render()
 
     -- end rendering at virtual resolution
     push:apply('end')
