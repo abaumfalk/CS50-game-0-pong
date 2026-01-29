@@ -68,6 +68,11 @@ function love.load()
     -- paddle positions on the Y axis (they can only move up or down)
     player1Y = 30
     player2Y = VIRTUAL_HEIGHT - 50
+
+   -- game state variable used to transition between different parts of the game
+    -- (used for beginning, menus, main game, high score list, etc.)
+    -- we will use this to determine behavior during render and update
+    gameState = 'start'
 end
 
 --[[
@@ -108,6 +113,14 @@ function love.keypressed(key)
     if key == 'escape' then
         -- function LÖVE gives us to terminate application
         love.event.quit()
+    -- if we press enter during the start state of the game, we'll go into play mode
+    -- during play mode, the ball will move in a random direction
+    elseif key == 'enter' or key == 'return' then
+        if gameState == 'start' then
+            gameState = 'play'
+        else
+            gameState = 'start'
+        end
     end
 end
 
@@ -123,10 +136,15 @@ function love.draw()
     -- to some versions of the original Pong
     love.graphics.clear(40/255, 45/255, 52/255, 255/255)
 
-    -- draw welcome text toward the top of the screen
+    -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
-    love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
 
+    if gameState == 'start' then
+        love.graphics.printf('Hello Start State!', 0, 20, VIRTUAL_WIDTH, 'center')
+    else
+        love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
+    end
+    
     -- draw score on the left and right center of the screen
     -- need to switch font to draw before actually printing
     love.graphics.setFont(scoreFont)
