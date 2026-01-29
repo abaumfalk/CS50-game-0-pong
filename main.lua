@@ -27,6 +27,17 @@
 -- https://github.com/Ulydev/push
 push = require 'push'
 
+-- the "Class" library we're using will allow us to represent anything in
+-- our game as code, rather than keeping track of many disparate variables and
+-- methods
+--
+-- https://github.com/vrld/hump/blob/master/class.lua
+Class = require 'class'
+
+-- our Paddle class, which stores position and dimensions for each Paddle
+-- and the logic for rendering them
+require 'Paddle'
+
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
@@ -69,9 +80,10 @@ function love.load()
     player1Score = 0
     player2Score = 0
 
-    -- paddle positions on the Y axis (they can only move up or down)
-    player1Y = 30
-    player2Y = VIRTUAL_HEIGHT - 50
+    -- initialize our player paddles; make them global so that they can be
+    -- detected by other functions and modules
+    player1 = Paddle(10, 30, 5, 20)
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
 
     -- velocity and position variables for our ball when play starts
     ballX = VIRTUAL_WIDTH / 2 - 2
@@ -94,25 +106,20 @@ end
 function love.update(dt)
     -- player 1 movement
     if love.keyboard.isDown('w') then
-        -- add negative paddle speed to current Y scaled by deltaTime
-        -- now, we clamp our position between the bounds of the screen
-        -- math.max returns the greater of two values; 0 and player Y
-        -- will ensure we don't go above it
-        player1Y = math.max(0, player1Y + -PADDLE_SPEED * dt)
+        player1.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('s') then
-        -- add positive paddle speed to current Y scaled by deltaTime
-        -- math.min returns the lesser of two values; bottom of the egde minus paddle height
-        -- and player Y will ensure we don't go below it
-        player1Y = math.min(VIRTUAL_HEIGHT - 20, player1Y + PADDLE_SPEED * dt)
+        player1.dy = PADDLE_SPEED
+    else
+        player1.dy = 0
     end
 
     -- player 2 movement
     if love.keyboard.isDown('up') then
-        -- add negative paddle speed to current Y scaled by deltaTime
-        player2Y = math.max(0, player2Y + -PADDLE_SPEED * dt)
+        player2.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('down') then
-        -- add positive paddle speed to current Y scaled by deltaTime
-        player2Y = math.min(VIRTUAL_HEIGHT - 20, player2Y + PADDLE_SPEED * dt)
+        player2.dy = PADDLE_SPEED
+    else
+        player2.dy = 0
     end
 
     -- update our ball based on its DX and DY only if we're in play state;
@@ -121,6 +128,9 @@ function love.update(dt)
         ballX = ballX + ballDX * dt
         ballY = ballY + ballDY * dt
     end
+
+    player1:update(dt)
+    player2:update(dt)
 end
 
 --[[
@@ -182,11 +192,9 @@ function love.draw()
     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
         VIRTUAL_HEIGHT / 3)
 
-    -- render first paddle (left side), now using the players' Y variable
-    love.graphics.rectangle('fill', 10, player1Y, 5, 20)
-
-    -- render second paddle (right side)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, 20)
+    -- render paddles, now using their class's render method
+    player1:render()
+    player2:render()
 
     -- render ball (center)
     love.graphics.rectangle('fill', ballX, ballY, 4, 4)
