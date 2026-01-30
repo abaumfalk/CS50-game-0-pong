@@ -41,9 +41,13 @@ function love.load()
     -- and graphics; try removing this function to see the difference!
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
-    -- initialize our virtual resolution, which will be rendered within our
-    -- actual window no matter its dimensions; replaces our love.window.setMode call
-    -- from the last example
+    -- more "retro-looking" font object we can use for any text
+    smallFont = love.graphics.newFont('font.ttf', 8)
+
+    -- set LÖVE2D's active font to the smallFont object
+    love.graphics.setFont(smallFont)
+
+    -- initialize window with virtual resolution
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         resizable = false,
