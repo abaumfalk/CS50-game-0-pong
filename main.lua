@@ -55,8 +55,9 @@ PADDLE_SPEED = 200
     Runs when the game first starts up, only once; used to initialize the game.
 ]]
 function love.load()
-    -- use nearest-neighbor filtering on upscaling and downscaling to prevent blurring of text 
-    -- and graphics; try removing this function to see the difference!
+    -- set love's default filter to "nearest-neighbor", which essentially
+    -- means there will be no filtering of pixels (blurriness), which is
+    -- important for a nice crisp, 2D look
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     -- set the title of our application window
