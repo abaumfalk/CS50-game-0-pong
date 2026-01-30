@@ -88,12 +88,9 @@ function love.load()
     player1Score = 0
     player2Score = 0
 
-    -- initialize our player paddles; make them global so that they can be
-    -- detected by other functions and modules
+    -- initialize player paddles and ball
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
-
-    -- place a ball in the middle of the screen
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     -- game state variable used to transition between different parts of the game
@@ -193,9 +190,7 @@ end
     passes in the key we pressed so we can access.
 ]]
 function love.keypressed(key)
-    -- keys can be accessed by string name
     if key == 'escape' then
-        -- function LÖVE gives us to terminate application
         love.event.quit()
     -- if we press enter during the start state of the game, we'll go into play mode
     -- during play mode, the ball will move in a random direction
@@ -216,7 +211,6 @@ end
     updated or otherwise.
 ]]
 function love.draw()
-    -- begin rendering at virtual resolution
     push:apply('start')
 
     -- clear the screen with a specific color; in this case, a color similar
@@ -228,17 +222,12 @@ function love.draw()
 
     displayScore()
 
-    -- render paddles, now using their class's render method
     player1:render()
     player2:render()
-
-    -- render ball using its class's render method
     ball:render()
 
-    -- new function just to demonstrate how to see FPS in LÖVE2D
     displayFPS()
 
-    -- end rendering at virtual resolution
     push:apply('end')
 end
 
