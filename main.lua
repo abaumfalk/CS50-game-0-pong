@@ -2,8 +2,8 @@
     GD50 2018
     Pong Remake
 
-    pong-7
-    "The Collision Update"
+    pong-8
+    "The Score Update"
 
     -- Main Program --
 
@@ -144,6 +144,20 @@ function love.update(dt)
             ball.y = VIRTUAL_HEIGHT - 4
             ball.dy = -ball.dy
         end
+    end
+
+    -- if we reach the left or right edge of the screen, 
+    -- go back to start and update the score
+    if ball.x < 0 then
+        player2Score = player2Score + 1
+        ball:reset()
+        gameState = 'start'
+    end
+
+    if ball.x > VIRTUAL_WIDTH then
+        player1Score = player1Score + 1
+        ball:reset()
+        gameState = 'start'
     end
 
     -- player 1 movement
