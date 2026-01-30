@@ -281,8 +281,6 @@ function love.draw()
     -- to some versions of the original Pong
     love.graphics.clear(40/255, 45/255, 52/255, 255/255)
 
-    love.graphics.setFont(smallFont)
-
     displayScore()
 
     if gameState == 'start' then
