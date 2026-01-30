@@ -212,12 +212,6 @@ function love.draw()
     -- draw different things based on the state of the game
     love.graphics.setFont(smallFont)
 
-    if gameState == 'start' then
-        love.graphics.printf('Hello Start State!', 0, 20, VIRTUAL_WIDTH, 'center')
-    else
-        love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
-    end
-    
     -- draw score on the left and right center of the screen
     -- need to switch font to draw before actually printing
     love.graphics.setFont(scoreFont)
